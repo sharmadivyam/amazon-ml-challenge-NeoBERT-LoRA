@@ -1,0 +1,78 @@
+# Model Selection
+model_type: "text_only"  # Options: "text_only", "multimodal"
+
+# Text-only Model Configuration
+text_only:
+  model_name: "chandar-lab/NeoBERT"
+  max_length: 625
+  batch_size: 64
+  learning_rate: 2.0e-5
+  num_epochs: 20
+  regressor_width: 256
+  regressor_depth: 1
+  dropout_rate: 0.4
+  weight_decay: 0.03
+  grad_clip_norm: 1.0
+
+# Multimodal Model Configuration
+multimodal:
+  text_model_name: "chandar-lab/NeoBERT"
+  clip_model_name: "openai/clip-vit-base-patch32"
+  max_text_length: 512
+  target_image_size: 224
+  batch_size: 64
+  learning_rate: 1.0e-5
+  num_epochs: 12
+  regressor_width: 512
+  regressor_depth: 2
+  dropout_rate: 0.4
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  
+  # Augmentation
+  use_mixup: false
+  mixup_alpha: 0.3
+  random_erase_prob: 0.2
+  
+  # Model freezing
+  unfreeze_text: false
+  unfreeze_clip_vision: false
+
+# Dataset Configuration
+dataset:
+  folder: "dataset"
+  train_csv: "train.csv"
+  test_csv: "test.csv"
+  train_image_dir: "train_images"
+  test_image_dir: "test_images"
+  val_split: 0.1
+  data_percentage: 1.0  # Use 1.0 for full dataset
+
+# Training Configuration
+training:
+  device: "cuda"  # Options: "cuda", "cpu"
+  num_workers: 16
+  prefetch_factor: 2
+  use_fp16: true
+  accumulation_steps: 1
+  warmup_proportion: 0.03
+  early_stopping_patience: 4
+  seed: 42
+
+# Output Configuration
+output:
+  model_dir: "models"
+  metrics_dir: "metrics"
+  submission_dir: "submission"
+  
+# MLflow Configuration
+mlflow:
+  experiment_name: "Amazon ML Challenge 2025"
+  tracking_uri: null  # Set to remote server if needed
+  run_name: null  # Will be auto-generated if null
+
+# Logging
+logging:
+  level: "INFO"  # Options: "DEBUG", "INFO", "WARNING", "ERROR"
+  save_plots: true
+  plot_frequency: 1  # Every N epochs
